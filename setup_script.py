@@ -84,14 +84,41 @@ def configure_vscode_interpreter() -> None:
     print("Updated local VS Code settings for .venv interpreter.")
 
 
+def build_venv(clear_existing: bool) -> int:
+    if clear_existing:
+        print("Rebuilding incomplete virtual environment at .venv ...")
+    else:
+        print("Creating virtual environment at .venv ...")
+
+    try:
+        venv.EnvBuilder(with_pip=True, clear=clear_existing).create(VENV_DIR)
+    except KeyboardInterrupt:
+        print("\nSetup interrupted while creating .venv.")
+        print("Rerun this command to continue.")
+        return 130
+    return 0
+
+
+def ensure_venv() -> int:
+    venv_python = get_venv_python_path()
+
+    if VENV_DIR.exists():
+        if venv_python.exists():
+            print("Virtual environment already exists at .venv. Reusing it.")
+            return 0
+
+        print("Detected incomplete .venv (often caused by an interrupted setup).")
+        return build_venv(clear_existing=True)
+
+    return build_venv(clear_existing=False)
+
+
 def main() -> int:
     os.chdir(ROOT)
 
-    if VENV_DIR.exists():
-        print("Virtual environment already exists at .venv. Reusing it.")
-    else:
-        print("Creating virtual environment at .venv ...")
-        venv.EnvBuilder(with_pip=True).create(VENV_DIR)
+    venv_status = ensure_venv()
+    if venv_status != 0:
+        return venv_status
 
     venv_python = get_venv_python_path()
     if not venv_python.exists():
@@ -123,3 +150,6 @@ if __name__ == "__main__":
     except subprocess.CalledProcessError as exc:
         print(f"\nA setup command failed (exit code {exc.returncode}).")
         raise SystemExit(exc.returncode)
+    except KeyboardInterrupt:
+        print("\nSetup interrupted.")
+        raise SystemExit(130)

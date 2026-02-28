@@ -2,11 +2,13 @@
 
 ## Fastest Path (recommended)
 1. Open this folder (`streamlit-app-template`) in VS Code.
-2. Run one command:
+2. In Terminal, move into the project directory:
+- `cd streamlit-app-template`
+3. Run one command:
 - macOS/Linux: `python3 setup_starter.py`
 - Windows: `python setup_starter.py`
-3. Keep that terminal open while the app runs.
-4. Stop the app with `Ctrl+C`.
+4. Keep that terminal open while the app runs.
+5. Stop the app with `Ctrl+C`.
 
 ## What the script does
 - creates/reuses `.venv`
@@ -15,10 +17,12 @@
 - runs `streamlit run app.py`
 
 ## If you want separate setup/run
-1. Setup only:
+1. In Terminal, move into the project directory:
+- `cd streamlit-app-template`
+2. Setup only:
 - macOS/Linux: `python3 setup_script.py`
 - Windows: `python setup_script.py`
-2. Run app:
+3. Run app:
 - macOS/Linux: `./.venv/bin/streamlit run app.py`
 - Windows: `.\.venv\Scripts\streamlit.exe run app.py`
 
@@ -40,3 +44,7 @@
 - close VS Code
 - reopen only this project folder (not its parent folder)
 - run `python3 setup_script.py` (or `python` on Windows) again
+
+5. You pressed `Ctrl+C` during setup and `.venv` is broken:
+- rerun `python3 setup_script.py` (or `python setup_script.py` on Windows)
+- the script now auto-rebuilds incomplete `.venv` folders

@@ -6,7 +6,11 @@ For full student instructions and troubleshooting, see `STEPS.md`.
 If commands say `file does not exist`, run `cd ..` and then `cd streamlit-app-template` before retrying.
 
 ## Quick Start (Recommended)
-1. From this folder, run one command:
+1. In Terminal, move into the project directory:
+```bash
+cd streamlit-app-template
+```
+2. Run one command:
 - macOS/Linux:
 ```bash
 python3 setup_starter.py
@@ -29,7 +33,11 @@ If `import streamlit` is still underlined in VS Code:
 - Windows: `.venv\\Scripts\\python.exe`
 
 ## Setup Then Run Manually
-1. Run setup:
+1. In Terminal, move into the project directory:
+```bash
+cd streamlit-app-template
+```
+2. Run setup:
 - macOS/Linux:
 ```bash
 python3 setup_script.py
@@ -38,7 +46,7 @@ python3 setup_script.py
 ```powershell
 python setup_script.py
 ```
-2. Activate the virtual environment:
+3. Activate the virtual environment:
 - macOS/Linux:
 ```bash
 source .venv/bin/activate
@@ -47,7 +55,7 @@ source .venv/bin/activate
 ```powershell
 .\.venv\Scripts\Activate.ps1
 ```
-3. Start the app:
+4. Start the app:
 ```bash
 streamlit run app.py
 ```

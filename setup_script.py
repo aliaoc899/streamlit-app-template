@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 import venv
 from pathlib import Path
@@ -89,12 +90,16 @@ def build_venv(clear_existing: bool) -> int:
         print("Rebuilding incomplete virtual environment at .venv ...")
     else:
         print("Creating virtual environment at .venv ...")
+    print("This may take 1-2 minutes on first run. Do not press Ctrl+C.")
 
     try:
         venv.EnvBuilder(with_pip=True, clear=clear_existing).create(VENV_DIR)
     except KeyboardInterrupt:
         print("\nSetup interrupted while creating .venv.")
-        print("Rerun this command to continue.")
+        if VENV_DIR.exists():
+            shutil.rmtree(VENV_DIR, ignore_errors=True)
+            print("Removed partial .venv.")
+        print("Do not activate .venv yet. Rerun this command to continue.")
         return 130
     return 0
 

@@ -4,17 +4,22 @@
 from __future__ import annotations
 
 import subprocess
+import os
 from pathlib import Path
 
 import setup_student_env
 
 
 def main() -> int:
+    # Ensure we are running from the script's directory
+    script_dir = Path(__file__).resolve().parent
+    os.chdir(script_dir)
+
     setup_code = setup_student_env.main()
     if setup_code != 0:
         return setup_code
 
-    venv_python = setup_student_env.get_venv_python_path()
+    venv_pythonscript_dirython_path()
     app_file = Path(__file__).resolve().parent / "app.py"
 
     print("\nStarting Streamlit app...")

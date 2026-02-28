@@ -1,6 +1,7 @@
 # Streamlit App Template
 
 Template for students to clone and run quickly.
+Open this repository folder itself in VS Code (not a parent directory that contains other `.venv` folders).
 
 ## Quick Start (Recommended)
 1. From this folder, run one command:
@@ -16,6 +17,14 @@ This will:
 - create/reuse `.venv`
 - install dependencies
 - start `streamlit run app.py`
+- set VS Code to use this folder's `.venv` interpreter
+
+If `import streamlit` is still underlined in VS Code:
+1. Open Command Palette (`Cmd+Shift+P` on macOS / `Ctrl+Shift+P` on Windows)
+2. Run `Python: Select Interpreter`
+3. Choose this project interpreter:
+- macOS/Linux: `.venv/bin/python`
+- Windows: `.venv\\Scripts\\python.exe`
 
 ## Setup Then Run Manually
 1. Run setup:

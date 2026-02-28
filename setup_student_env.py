@@ -3,15 +3,16 @@
 
 from __future__ import annotations
 
+import json
 import os
 import subprocess
-import sys
 import venv
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 VENV_DIR = ROOT / ".venv"
 REQUIREMENTS_FILE = ROOT / "requirements.txt"
+VSCODE_SETTINGS_FILE = ROOT / ".vscode" / "settings.json"
 
 
 def run_command(cmd: list[str], description: str) -> None:
@@ -35,6 +36,35 @@ def get_direct_streamlit_command() -> str:
     if os.name == "nt":
         return r".\.venv\Scripts\streamlit.exe run app.py"
     return "./.venv/bin/streamlit run app.py"
+
+
+def get_vscode_interpreter_path() -> str:
+    if os.name == "nt":
+        return r"${workspaceFolder}\.venv\Scripts\python.exe"
+    return "${workspaceFolder}/.venv/bin/python"
+
+
+def configure_vscode_interpreter() -> None:
+    VSCODE_SETTINGS_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+    settings: dict[str, object] = {}
+    if VSCODE_SETTINGS_FILE.exists():
+        try:
+            settings = json.loads(VSCODE_SETTINGS_FILE.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            print(
+                "Could not parse existing .vscode/settings.json; "
+                "skipping VS Code interpreter update."
+            )
+            return
+
+    settings["python.defaultInterpreterPath"] = get_vscode_interpreter_path()
+    settings["python.terminal.activateEnvironment"] = True
+    VSCODE_SETTINGS_FILE.write_text(
+        json.dumps(settings, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    print("Updated VS Code settings for local .venv interpreter.")
 
 
 def main() -> int:
@@ -61,6 +91,7 @@ def main() -> int:
         [str(venv_python), "-m", "pip", "install", "-r", str(REQUIREMENTS_FILE)],
         "Installing dependencies",
     )
+    configure_vscode_interpreter()
 
     print("\nSetup complete.")
     print(f"Activate environment: {get_activation_hint()}")

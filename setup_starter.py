@@ -7,7 +7,7 @@ import subprocess
 import os
 from pathlib import Path
 
-import setup_student_env
+import setup_script
 
 
 def main() -> int:
@@ -15,11 +15,11 @@ def main() -> int:
     script_dir = Path(__file__).resolve().parent
     os.chdir(script_dir)
 
-    setup_code = setup_student_env.main()
+    setup_code = setup_script.main()
     if setup_code != 0:
         return setup_code
 
-    venv_python = setup_student_env.get_venv_python_path()
+    venv_python = setup_script.get_venv_python_path()
     app_file = Path(__file__).resolve().parent / "app.py"
 
     print("\nStarting Streamlit app...")

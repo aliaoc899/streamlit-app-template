@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parent
 VENV_DIR = ROOT / ".venv"
 REQUIREMENTS_FILE = ROOT / "requirements.txt"
 VSCODE_SETTINGS_FILE = ROOT / ".vscode" / "settings.json"
+DEFAULT_REQUIREMENTS = ["streamlit"]
 
 
 def run_command(cmd: list[str], description: str) -> None:
@@ -38,33 +39,44 @@ def get_direct_streamlit_command() -> str:
     return "./.venv/bin/streamlit run app.py"
 
 
-def get_vscode_interpreter_path() -> str:
-    if os.name == "nt":
-        return r"${workspaceFolder}\.venv\Scripts\python.exe"
-    return "${workspaceFolder}/.venv/bin/python"
+def load_requirements_from_file(requirements_file: Path) -> list[str]:
+    if not requirements_file.exists():
+        return []
+
+    try:
+        lines = requirements_file.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return []
+
+    requirements: list[str] = []
+    for raw_line in lines:
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        requirements.append(line)
+    return requirements
+
+
+def get_requirements_to_install() -> tuple[list[str], str]:
+    file_requirements = load_requirements_from_file(REQUIREMENTS_FILE)
+    if file_requirements:
+        return file_requirements, f"{REQUIREMENTS_FILE.name}"
+    return DEFAULT_REQUIREMENTS, "built-in defaults"
 
 
 def configure_vscode_interpreter() -> None:
-    # If we are in a subdirectory of the workspace (likely), we should try to
-    # update the workspace settings if possible, or just use absolute paths.
-    # But for simplicity in this template, let's just make sure the local
-    # settings file uses an absolute path so it works regardless of how
-    # the project is opened (if the user opens this specific folder).
-    
     VSCODE_SETTINGS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    
+
     settings: dict[str, object] = {}
     if VSCODE_SETTINGS_FILE.exists():
         try:
             settings = json.loads(VSCODE_SETTINGS_FILE.read_text(encoding="utf-8"))
         except json.JSONDecodeError:
-            pass  # Start fresh if invalid
+            print("Could not parse existing VS Code settings. Recreating file.")
 
-    # Use absolute path to ensure it works even if workspace root is different
-    # or if it's a nested folder.
     settings["python.defaultInterpreterPath"] = str(get_venv_python_path())
     settings["python.terminal.activateEnvironment"] = True
-    
+
     VSCODE_SETTINGS_FILE.write_text(
         json.dumps(settings, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
@@ -73,12 +85,7 @@ def configure_vscode_interpreter() -> None:
 
 
 def main() -> int:
-    # Ensure consistent working directory (script folder)
     os.chdir(ROOT)
-
-    if not REQUIREMENTS_FILE.exists():
-        print(f"Could not find requirements file: {REQUIREMENTS_FILE}")
-        return 1
 
     if VENV_DIR.exists():
         print("Virtual environment already exists at .venv. Reusing it.")
@@ -95,8 +102,10 @@ def main() -> int:
         [str(venv_python), "-m", "pip", "install", "--upgrade", "pip"],
         "Upgrading pip",
     )
+    requirements, requirements_source = get_requirements_to_install()
+    print(f"Dependency source: {requirements_source}")
     run_command(
-        [str(venv_python), "-m", "pip", "install", "-r", str(REQUIREMENTS_FILE)],
+        [str(venv_python), "-m", "pip", "install", *requirements],
         "Installing dependencies",
     )
     configure_vscode_interpreter()

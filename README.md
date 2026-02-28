@@ -2,20 +2,22 @@
 
 Template for students to clone and run quickly.
 Open this repository folder itself in VS Code (not a parent directory that contains other `.venv` folders).
+For full student instructions and troubleshooting, see `STEPS.md`.
+If commands say `file does not exist`, run `cd ..` and then `cd streamlit-app-template` before retrying.
 
 ## Quick Start (Recommended)
 1. From this folder, run one command:
 - macOS/Linux:
 ```bash
-python3 start_student_app.py
+python3 setup_starter.py
 ```
 - Windows:
 ```powershell
-python start_student_app.py
+python setup_starter.py
 ```
 This will:
 - create/reuse `.venv`
-- install dependencies
+- install dependencies (`requirements.txt` if present, otherwise script defaults)
 - start `streamlit run app.py`
 - set VS Code to use this folder's `.venv` interpreter
 
@@ -30,11 +32,11 @@ If `import streamlit` is still underlined in VS Code:
 1. Run setup:
 - macOS/Linux:
 ```bash
-python3 setup_student_env.py
+python3 setup_script.py
 ```
 - Windows:
 ```powershell
-python setup_student_env.py
+python setup_script.py
 ```
 2. Activate the virtual environment:
 - macOS/Linux:

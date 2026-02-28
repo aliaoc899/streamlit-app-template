@@ -19,7 +19,7 @@ def main() -> int:
     if setup_code != 0:
         return setup_code
 
-    venv_pythonscript_dirython_path()
+    venv_python = setup_student_env.get_venv_python_path()
     app_file = Path(__file__).resolve().parent / "app.py"
 
     print("\nStarting Streamlit app...")

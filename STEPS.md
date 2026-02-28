@@ -1,28 +1,27 @@
 # Student Steps
 
-## Fastest Path (recommended)
+## Step 1 (One-Time Setup)
 1. Open this folder (`streamlit-app-template`) in VS Code.
 2. In Terminal, move into the project directory:
 - `cd streamlit-app-template`
-3. Run one command:
-- macOS/Linux: `python3 setup_starter.py`
-- Windows: `python setup_starter.py`
-4. Keep that terminal open while the app runs.
-5. Stop the app with `Ctrl+C`.
+3. Run setup:
+- macOS/Linux: `python3 setup_script.py`
+- Windows: `python setup_script.py`
+4. Wait for `Setup complete.` (do not press `Ctrl+C` during setup).
 
-## What the script does
+## What setup_script.py does
 - creates/reuses `.venv`
 - installs dependencies (`requirements.txt` if present, otherwise built-in defaults)
 - sets VS Code to this folder's interpreter
-- runs `streamlit run app.py`
 
-## If you want separate setup/run
-1. In Terminal, move into the project directory:
-- `cd streamlit-app-template`
-2. Setup only:
-- macOS/Linux: `python3 setup_script.py`
-- Windows: `python setup_script.py`
-3. Run app:
+## Step 2 (Run App)
+1. Run starter:
+- macOS/Linux: `python3 setup_starter.py`
+- Windows: `python setup_starter.py`
+2. Keep terminal open while app is running.
+3. Stop app with `Ctrl+C`.
+
+## Optional: Run Without Starter Script
 - macOS/Linux: `./.venv/bin/streamlit run app.py`
 - Windows: `.\.venv\Scripts\streamlit.exe run app.py`
 
@@ -38,7 +37,7 @@
 3. `file does not exist` / `No such file or directory`:
 - you are likely in the wrong folder
 - run `cd ..` once, then `cd streamlit-app-template`
-- rerun: `python3 setup_starter.py` (or `python setup_starter.py` on Windows)
+- rerun setup: `python3 setup_script.py` (or `python setup_script.py` on Windows)
 
 4. Wrong environment picked:
 - close VS Code

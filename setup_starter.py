@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Set up dependencies (if needed) and launch the Streamlit app."""
+"""Start the Streamlit app after setup has been completed."""
 
 from __future__ import annotations
 
@@ -10,17 +10,40 @@ from pathlib import Path
 import setup_script
 
 
+def has_streamlit(venv_python: Path) -> bool:
+    result = subprocess.run(
+        [str(venv_python), "-c", "import streamlit"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    return result.returncode == 0
+
+
 def main() -> int:
     # Ensure we are running from the script's directory
     script_dir = Path(__file__).resolve().parent
     os.chdir(script_dir)
 
-    setup_code = setup_script.main()
-    if setup_code != 0:
-        return setup_code
-
     venv_python = setup_script.get_venv_python_path()
+    if not venv_python.exists():
+        print("Setup is not complete: .venv was not found.")
+        print("Run setup first:")
+        print("- macOS/Linux: python3 setup_script.py")
+        print("- Windows: python setup_script.py")
+        return 1
+
+    if not has_streamlit(venv_python):
+        print("Streamlit is not installed in this project's .venv.")
+        print("Run setup first:")
+        print("- macOS/Linux: python3 setup_script.py")
+        print("- Windows: python setup_script.py")
+        return 1
+
     app_file = Path(__file__).resolve().parent / "app.py"
+    if not app_file.exists():
+        print(f"Could not find app file: {app_file}")
+        return 1
 
     print("\nStarting Streamlit app...")
     print("Press Ctrl+C to stop.")

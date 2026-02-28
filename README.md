@@ -5,34 +5,7 @@ Open this repository folder itself in VS Code (not a parent directory that conta
 For full student instructions and troubleshooting, see `STEPS.md`.
 If commands say `file does not exist`, run `cd ..` and then `cd streamlit-app-template` before retrying.
 
-## Quick Start (Recommended)
-1. In Terminal, move into the project directory:
-```bash
-cd streamlit-app-template
-```
-2. Run one command:
-- macOS/Linux:
-```bash
-python3 setup_starter.py
-```
-- Windows:
-```powershell
-python setup_starter.py
-```
-This will:
-- create/reuse `.venv`
-- install dependencies (`requirements.txt` if present, otherwise script defaults)
-- start `streamlit run app.py`
-- set VS Code to use this folder's `.venv` interpreter
-
-If `import streamlit` is still underlined in VS Code:
-1. Open Command Palette (`Cmd+Shift+P` on macOS / `Ctrl+Shift+P` on Windows)
-2. Run `Python: Select Interpreter`
-3. Choose this project interpreter:
-- macOS/Linux: `.venv/bin/python`
-- Windows: `.venv\\Scripts\\python.exe`
-
-## Setup Then Run Manually
+## Step 1 (One-Time Setup)
 1. In Terminal, move into the project directory:
 ```bash
 cd streamlit-app-template
@@ -46,20 +19,31 @@ python3 setup_script.py
 ```powershell
 python setup_script.py
 ```
-3. Activate the virtual environment:
+This will:
+- create/reuse `.venv`
+- install dependencies (`requirements.txt` if present, otherwise script defaults)
+- set VS Code to use this folder's `.venv` interpreter
+
+If `import streamlit` is still underlined in VS Code:
+1. Open Command Palette (`Cmd+Shift+P` on macOS / `Ctrl+Shift+P` on Windows)
+2. Run `Python: Select Interpreter`
+3. Choose this project interpreter:
+- macOS/Linux: `.venv/bin/python`
+- Windows: `.venv\\Scripts\\python.exe`
+
+## Step 2 (Run App)
+1. Run starter:
 - macOS/Linux:
 ```bash
-source .venv/bin/activate
+python3 setup_starter.py
 ```
-- Windows PowerShell:
+- Windows:
 ```powershell
-.\.venv\Scripts\Activate.ps1
+python setup_starter.py
 ```
-4. Start the app:
-```bash
-streamlit run app.py
-```
-Or run without activating:
+2. Keep terminal open while app is running.
+
+## Run Without Starter Script
 - macOS/Linux: `./.venv/bin/streamlit run app.py`
 - Windows: `.\.venv\Scripts\streamlit.exe run app.py`
 
